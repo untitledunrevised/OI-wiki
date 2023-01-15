@@ -20,14 +20,14 @@ $$
 
 特别地，当 $n = 0$ 时，定义 $x^{\underline n} = x^{\overline n} = 1$。
 
-### 求解展开式
+### 展开式
 
 上升幂和下降幂的展开式分别为：
 
 $$
 \begin{aligned}
 x^{\overline n} &= \sum_{k = 0}^{n} s_u(n, k) = \sum_{k = 0}^{n} \begin{bmatrix} n \\ k \end{bmatrix} \\
-x^{\underline n} &= \sum_{k = 0}^{n} s_s(n, k) = \sum_{k = 0}^{n}
+x^{\underline n} &= \sum_{k = 0}^{n} s_s(n, k)
 \end{aligned}
 $$
 
@@ -48,7 +48,7 @@ $$
 $$
 \begin{aligned}
 x^{\overline{n + m}} &= x^{\overline n}(x + n)^{\overline m} \\
-x^{\underline{n + m}} &= x^{\underlineline n}(x - n)^{\underline m}
+x^{\underline{n + m}} &= x^{\underline n}(x - n)^{\underline m}
 \end{aligned}
 $$
 
@@ -68,8 +68,39 @@ $$
 
 如果已经求出了上升幂 $x^{\overline n}$ 或下降幂 $x^{\underline n}$ 的展开形式，则使用多项式平移可以在 $O(n \log n)$ 的时间求出 $(x + n)^{\overline n}$ 或 $(x - n)^{\underline n}$ 的展开形式。如果 $\lfloor N/2 \rfloor \not = \lceil N/2 \rceil$，则对 $(x + n)^{\overline n}$ 或 $(x - n)^{\underline n}$ 的展开形式再暴力乘上 $(x + 2n)$ 或 $(x - 2n)$ 即可。
 
-时间复杂度
+总时间复杂度
 
 $$
 T(n) = T(n / 2) + O(n \log n) = O(n \log n)
 $$
+
+## 上升幂多项式与下降幂多项式
+
+### 定义
+
+**下降幂多项式** 是具有如下形式的一种多项式：
+
+$$
+F^{\downarrow}(x) = a_0 + a_1x + a_2x^{\underline 2} + a_3x^{\underline 3} + \dots
+$$
+
+**上式幂多项式** 是具有如下形式的一种多项式：
+
+$$
+F^{\uparrow}(x) = a_0 + a_1x + a_2x^{\overline 2} + a_3x^{\overline 3} + \dots
+$$
+
+### 下降幂多项式乘法
+
+给定两个下降幂多项式 $F^{\downarrow}(x)$ 和 $G^{\downarrow}(x)$，求下降幂多项式 $H^{\downarrow}(x)$ 使得 $H^{\downarrow}(x) = F^{\downarrow}(x)G^{\downarrow}(x)$。
+
+首先，扩展一下排列数和组合数的运算：
+
+$$
+\begin{aligned}
+\mathrm{A}_c^k &= c^{\underline k} \\
+\mathrm{C}_c^k &= \binom{c}{k} = \frac{\mathrm{A}_c^k}{k!} = \frac{c^{\underline k}}{k!}
+\end{aligned}
+$$
+
+其中 $c \in \mathbf C$，$k \in \mathbf N$。
