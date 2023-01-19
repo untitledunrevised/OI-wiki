@@ -75,6 +75,111 @@ int main() {
 | 前置              | `T& T::operator++();`   | `T& operator++(T& a);`     |
 | 后置              | `T T::operator++(int);` | `T operator++(T& a, int);` |
 
+后置自增自减可基于前置自增自减实现，下面是参考模板：
+
+=== "成员函数"
+
+    ```cpp
+    struct T {
+    
+        // 前置自增
+        T& operator++() {
+            /* TODO: 将前置自增发生于此 */
+            return *this;
+        }
+        
+        // 后置自增 
+        T operator++(int) {
+            T prev = *this;
+            operator++(); // 对 this 调用前置自增 
+            return prev;
+        }
+        
+        // 前置自减
+        T& operator--() {
+            /* TODO: 将前置自减发生于此 */
+            return *this;
+        }
+        
+        // 后置自减
+        T operator--(int) {
+            T prev = *this;
+            operator--(); // 对 this 调用前置自减 
+            return prev;
+        }
+    
+    }
+    ```
+
+=== "非成员函数"
+
+    ```cpp
+    // 前置自增
+    T& operator++(T& lhs) {
+        /* TODO: 将对 lhs 的前置自增发生于此 */
+        return lhs;
+    }
+    
+    // 后置自增 
+    T operator++(T& lhs, int) {
+        T prev = lhs;
+        ++lhs; // 对 lhs 调用前置自增 
+        return prev;
+    }
+    
+    // 前置自减
+    T& operator--(T& lhs) {
+        /* TODO: 将对 lhs 的前置自减发生于此 */
+        return lhs;
+    }
+    
+    // 后置自减
+    T operator--(T& lhs, int) {
+        T prev = lhs;
+        --lhs; // 对 lhs 调用前置自减 
+        return prev;
+    }
+    ```
+
+### 复合赋值运算符与二元算术运算符
+
+如果一个类型会非常频繁地使用自定义的算术运算符，直接硬写会比较不方便：比如自己写复数类型，如果程序经常使用复数的四则运算，式子又非常复杂，直接硬写会使代码非常复杂且难以调试。此时预先自定义算术运算符就可以降低复杂程度。
+
+尽管不是硬性要求，因为每个二元算术运算符都存在对应的复合赋值运算符，所以二元算数运算符的规范形式是基于它对应的复合赋值实现的。预先自定义好复合赋值运算符就可以定义二元算术运算符。下面给出参考模板：
+
+=== "成员函数"
+
+    ```cpp
+    struct T {
+        /* TODO: 将 @ 替换为二元算术运算符 */
+        
+        // *this @= rhs
+        T& operator @= (const T& rhs) {
+            /* TODO: 将 rhs 作用到 *this 发生于此 */
+            return *this;
+        }
+        
+        // 
+        T operator @ (T lhs, const T& rhs) {
+            lhs += rhs;
+            return lhs;
+        }
+    }
+    ```
+
+ === "非成员函数"
+ 
+    ```cpp
+    /* TODO: 将 @ 替换为二元算术运算符 */
+    
+    // lhs @ rhs
+    T operator @ (T lhs, const T& rhs) {
+        lhs += rhs;
+        return lhs;
+    }
+    ```
+
+
 ### 比较运算符
 
 在 `std::sort` 和一些 STL 容器中，需要用到 `<` 运算符。在使用自定义类型时，我们需要手动重载。
