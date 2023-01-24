@@ -1,5 +1,3 @@
-# Java 进阶
-
 ???+ warning "注意"
     以下内容均基于 Java JDK 8 版本编写，不排除在更高版本中有部分改动的可能性。
 
@@ -1295,7 +1293,7 @@ public class Main {
 **`Arrays.sort()` 底层函数：**
 
 1. 当你 `Arrays.sort` 的参数数组元素类型为基本数据类型（`byte`、`short`、`char`、`int`、`long`、`double`、`float`）时，默认为 `DualPivotQuicksort`（双轴快排），复杂度最坏可以达到 $O(n^2)$。
-2. 当你 `Arrays.sort` 的参数数组元素类型为非基本数据类型时），则默认为 `legacyMergeSort` 和 `TimSort` (归并排序），复杂度为$O(nlog_n)$。
+2. 当你 `Arrays.sort` 的参数数组元素类型为非基本数据类型时），则默认为 `legacyMergeSort` 和 `TimSort` (归并排序），复杂度为$O(n\log n)$。
 
 可以通过如下代码验证：
 

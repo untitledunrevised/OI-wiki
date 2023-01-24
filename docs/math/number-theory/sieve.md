@@ -143,7 +143,7 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu
 
 由优化“筛至平方根”可知，不需要一直保留整个 `is_prime[1...n]` 数组。为了进行筛选，只保留到 $\sqrt n$ 的素数就足够了，即 `prime[1...sqrt(n)]`。并将整个范围分成块，每个块分别进行筛选。这样，我们就不必同时在内存中保留多个块，而且 CPU 可以更好地处理缓存。
 
-设 $s$ 是一个常数，它决定了块的大小，那么我们就有了 $\lceil {\frac n s} \rceil$ 个块，而块 $k$($k = 0 ... \lfloor {\frac n s} \rfloor$) 包含了区间 $[ks; ks + s - 1]$ 中的数字。我们可以依次处理块，也就是说，对于每个块 $k$，我们将遍历所有质数（从 $1$ 到 $\sqrt n$）并使用它们进行筛选。
+设 $s$ 是一个常数，它决定了块的大小，那么我们就有了 $\lceil {\frac n s} \rceil$ 个块，而块 $k$($k = 0 \dots \lfloor {\frac n s} \rfloor$) 包含了区间 $[ks; ks + s - 1]$ 中的数字。我们可以依次处理块，也就是说，对于每个块 $k$，我们将遍历所有质数（从 $1$ 到 $\sqrt n$）并使用它们进行筛选。
 
 值得注意的是，我们在处理第一个数字时需要稍微修改一下策略：首先，应保留 $[1; \sqrt n]$ 中的所有的质数；第二，数字 $0$ 和 $1$ 应该标记为非素数。在处理最后一个块时，不应该忘记最后一个数字 $n$ 并不一定位于块的末尾。
 
@@ -197,19 +197,19 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu
     === "C++"
     
         ```cpp
-        void init() {
-          for (int i = 2; i < MAXN; ++i) {
+        void init(int n) {
+          for (int i = 2; i <= n; ++i) {
             if (!vis[i]) {
               pri[cnt++] = i;
             }
             for (int j = 0; j < cnt; ++j) {
-              if (1ll * i * pri[j] >= MAXN) break;
+              if (1ll * i * pri[j] > n) break;
               vis[i * pri[j]] = 1;
               if (i % pri[j] == 0) {
                 // i % pri[j] == 0
                 // 换言之，i 之前被 pri[j] 筛过了
-                // 由于 pri 里面质数是从小到大的，所以 i 乘上其他的质数的结果一定也是
-                // pri[j] 的倍数 它们都被筛过了，就不需要再筛了，所以这里直接 break
+                // 由于 pri 里面质数是从小到大的，所以 i乘上其他的质数的结果一定会被
+                // pri[j]的倍数筛掉，就不需要在这里先筛一次，所以这里直接 break
                 // 掉就好了
                 break;
               }
@@ -221,21 +221,21 @@ author: inkydragon, TravorLZH, YOYO-UIAT, wood3, shuzhouliu
     === "Python"
     
         ```python
-        def init():
-            for i in range(2, MAXN):
+        def init(n):
+            for i in range(2, n + 1):
                 if vis[i] == False:
                     pri[cnt] = i
                     cnt = cnt + 1
                 for j in range(0, cnt):
-                    if i * pri[j] >= MAXN:
+                    if i * pri[j] > n:
                         break
                     vis[i * pri[j]] = 1
                     if i % pri[j] == 0:
                         """
                         i % pri[j] == 0
                         换言之，i 之前被 pri[j] 筛过了
-                        由于 pri 里面质数是从小到大的，所以 i 乘上其他的质数的结果一定也是
-                        pri[j] 的倍数 它们都被筛过了，就不需要再筛了，所以这里直接 break
+                        由于 pri 里面质数是从小到大的，所以 i 乘上其他的质数的结果一定会被
+                        pri[j]的倍数筛掉，就不需要在这里先筛一次，所以这里直接 break
                         掉就好了
                         """
                         break
